@@ -15,16 +15,20 @@ namespace ResourceEmbedder.Core.Cecil
         /// Creates a new instance
         /// </summary>
         /// <param name="logger"></param>
-        public CecilBasedCodeInjector(ILogger logger)
+        /// <param name="assemblyResolver"></param>
+        public CecilBasedCodeInjector(ILogger logger, IAssemblyResolver assemblyResolver)
         {
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            AssemblyResolver = assemblyResolver ?? throw new ArgumentNullException(nameof(assemblyResolver));
         }
 
         /// <inheritdoc />
         public ILogger Logger { get; }
 
+        public IAssemblyResolver AssemblyResolver { get; }
+
         /// <inheritdoc />
-        public bool Inject(AssemblyDefinition assembly, Func<AssemblyDefinition, MethodDefinition> methodToCall)
+        public bool Inject(AssemblyDefinition assembly, Func<AssemblyDefinition, IAssemblyResolver, MethodDefinition> methodToCall)
         {
             if (assembly == null || methodToCall == null)
             {
@@ -40,7 +44,7 @@ namespace ResourceEmbedder.Core.Cecil
                 // don't fully replace the code, always possible that user already uses code in here (e.g. when using Fody/Costura in conjunction with our code)
                 // instead, inject our invoke before every return statement
                 var returnPoints = body.Instructions.Where(i => i.OpCode == OpCodes.Ret).ToList();
-                var m = methodToCall(assembly);
+                var m = methodToCall(assembly, AssemblyResolver);
                 foreach (var returnPoint in returnPoints)
                 {
                     var idx = body.Instructions.IndexOf(returnPoint);

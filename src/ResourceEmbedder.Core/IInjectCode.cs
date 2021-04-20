@@ -23,6 +23,6 @@ namespace ResourceEmbedder.Core
         /// <param name="assembly">The assembly on which to perform injection.</param>
         /// <param name="methodToCall"></param>
         /// <returns></returns>
-        bool Inject(AssemblyDefinition assembly, Func<AssemblyDefinition, MethodDefinition> methodToCall);
+        bool Inject(AssemblyDefinition assembly, Func<AssemblyDefinition, IAssemblyResolver, MethodDefinition> methodToCall);
     }
 }

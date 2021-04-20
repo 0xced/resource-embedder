@@ -78,7 +78,7 @@ namespace ResourceEmbedder.Core.Cecil
 
             _assemblyDefinition = AssemblyDefinition.ReadAssembly(inputAssembly, rp);
             _resourceEmbedder = new CecilBasedResourceEmbedder(logger);
-            _codeInjector = new CecilBasedCodeInjector(logger);
+            _codeInjector = new CecilBasedCodeInjector(logger, new DirectoryAssemblyResolver(logger, searchDirectories));
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace ResourceEmbedder.Core.Cecil
         }
 
         /// <inheritdoc />
-        public bool InjectModuleInitializedCode(Func<AssemblyDefinition, MethodDefinition> func)
+        public bool InjectModuleInitializedCode(Func<AssemblyDefinition, IAssemblyResolver, MethodDefinition> func)
         {
             return _codeInjector.Inject(_assemblyDefinition, func);
         }
