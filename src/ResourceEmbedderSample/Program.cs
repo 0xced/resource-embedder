@@ -56,7 +56,13 @@ namespace ResourceEmbedderSample
                 }
                 resources.Add(new ResourceInfo(inputResource, embeddedName));
             }
-            using (IModifyAssemblies modifier = new CecilBasedAssemblyModifier(logger, input, output))
+            // TODO: determine if .NET Framework or .NET Core search paths must be used for `input`
+            var searchDirectories = new[]
+            {
+                @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\",
+                @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\",
+            };
+            using (IModifyAssemblies modifier = new CecilBasedAssemblyModifier(logger, input, output, searchDirectories))
             {
                 if (!modifier.EmbedResources(resources.ToArray()))
                 {
