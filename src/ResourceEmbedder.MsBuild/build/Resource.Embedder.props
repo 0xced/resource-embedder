@@ -29,6 +29,7 @@
                                                             TargetPath="$(TargetPath)"
                                                             SignAssembly="$(EmbedderSignAssembly)"
                                                             References="@(ReferencePath)"
+                                                            TargetFrameworkDirectories="@(_ReferenceInstalledAssemblyDirectory)"
                                                             DebugSymbols="$(DebugSymbols)"
                                                             DebugType="$(DebugType)">
       <Output TaskParameter="EmbeddedCultures" PropertyName="EmbeddedCultures" />
@@ -42,6 +43,7 @@
                                                             TargetPath="$(TargetPath)"
                                                             SignAssembly="$(EmbedderSignAssembly)"
                                                             References="@(ReferencePath)"
+                                                            TargetFrameworkDirectories="@(_ReferenceInstalledAssemblyDirectory)"
                                                             DebugSymbols="$(DebugSymbols)"
                                                             DebugType="$(DebugType)">
       <Output TaskParameter="EmbeddedCultures" PropertyName="EmbeddedCultures" />

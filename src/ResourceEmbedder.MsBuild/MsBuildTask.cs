@@ -31,6 +31,8 @@ namespace ResourceEmbedder.MsBuild
 
         public ITaskItem[] References { get; set; }
 
+        public ITaskItem[] TargetFrameworkDirectories { get; set; }
+
         #endregion Properties
 
         #region Methods
