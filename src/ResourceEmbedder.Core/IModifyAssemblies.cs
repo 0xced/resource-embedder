@@ -35,7 +35,7 @@ namespace ResourceEmbedder.Core
         /// </summary>
         /// <param name="func"></param>
         /// <returns>True on success, false on error.</returns>
-        bool InjectModuleInitializedCode(Func<AssemblyDefinition, MethodDefinition> func);
+        bool InjectModuleInitializedCode(Func<AssemblyDefinition, IAssemblyResolver, MethodDefinition> func);
 
         /// <summary>
         /// Call to save changes.

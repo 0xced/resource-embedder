@@ -17,8 +17,9 @@ namespace ResourceEmbedder.Core.Cecil
         /// Then returns the <see cref="InjectedResourceLoader.Attach"/> method.
         /// </summary>
         /// <param name="definition">The assembly where the type should be added to.</param>
+        /// <param name="assemblyResolver">The assembly resolver for resolving assembly references found in the <paramref name="definition"/>.</param>
         /// <returns>A public, static method with no arguments that was added to the assembly.</returns>
-        public static MethodDefinition InjectEmbeddedResourceLoader(AssemblyDefinition definition)
+        public static MethodDefinition InjectEmbeddedResourceLoader(AssemblyDefinition definition, IAssemblyResolver assemblyResolver)
         {
             if (definition == null)
             {
@@ -26,7 +27,12 @@ namespace ResourceEmbedder.Core.Cecil
             }
             var type = typeof(InjectedResourceLoader);
             var asm = Assembly.GetAssembly(type);
-            var module = ModuleDefinition.ReadModule(asm.GetLocation());
+            var readParameters = new ReaderParameters
+            {
+                AssemblyResolver = assemblyResolver,
+                InMemory = true,
+            };
+            var module = ModuleDefinition.ReadModule(asm.GetLocation(), readParameters);
             const string nameSpace = "ResourceEmbedderCompilerGenerated";
             const string className = "ResourceEmbedderILInjected";
             const string initMethod = "Attach";
