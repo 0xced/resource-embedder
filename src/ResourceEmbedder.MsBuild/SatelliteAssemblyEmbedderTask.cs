@@ -72,7 +72,9 @@ namespace ResourceEmbedder.MsBuild
             // so we need to tell Cecil about all the directories where they could be
 
             // we need the directory path, but the references are all files, so convert and take distinct set
-            searchDirs.AddRange(References.Select(r => Path.GetDirectoryName(r.ItemSpec)).Distinct().OrderBy(e => e));
+            var references = References.Select(r => Path.GetDirectoryName(r.ItemSpec));
+            var targetFrameworkDirectories = TargetFrameworkDirectories.Select(r => Path.GetDirectoryName(r.ItemSpec));
+            searchDirs.AddRange(references.Concat(targetFrameworkDirectories).Distinct().OrderBy(e => e));
             logger.Info("Looking for references in:{0}", searchDirs.Aggregate("", (current, next) => current + Environment.NewLine + "  - " + next));
 
             StrongNameKeyPair signingKey = null;
